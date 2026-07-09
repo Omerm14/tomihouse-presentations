@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorkSpace OS, Enterprise Workspace Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0E1319;
+  --surface:#151B23;
+  --surface2:#1A212B;
+  --border:rgba(255,255,255,.06);
+  --border-strong:rgba(255,255,255,.11);
+  --green:#6FA6AC;
+  --green-dim:#5A9298;
+  --green-bg:rgba(111,166,172,.08);
+  --green-border:rgba(111,166,172,.2);
+  --amber:#B3A488;
+  --amber-bg:rgba(179,164,136,.08);
+  --rose:#A88C8C;
+  --rose-bg:rgba(168,140,140,.08);
+  --blue:#7C93A0;
+  --blue-bg:rgba(124,147,160,.08);
+  --white:#EEF2F6;
+  --text:#CBD4DD;
+  --muted:#7A8794;
+  --muted2:#4E5A66;
+  --radius:10px;
+  --radius-lg:14px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ─── SUBTLE GRID BG ─── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+  background-size:48px 48px;
+}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:56px;background:rgba(14,19,25,.88);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2.5rem;
+}
+.brand{font-weight:800;font-size:1rem;color:var(--white);letter-spacing:-.5px}
+.brand em{color:var(--green);font-style:normal}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:.78rem;color:var(--muted);text-decoration:none;font-weight:500;transition:color .15s}
+.nav-links a:hover{color:var(--white)}
+.nav-pill{
+  font-size:.72rem;font-weight:600;
+  background:var(--green-bg);color:var(--green);
+  border:1px solid var(--green-border);
+  padding:.28rem .8rem;border-radius:99px;letter-spacing:.3px;
+}
+
+/* ─── CURSOR ─── */
+#ch{position:fixed;pointer-events:none;z-index:9999;width:32px;height:32px;border-radius:50%;
+  background:radial-gradient(circle,rgba(111,166,172,.45) 0%,rgba(111,166,172,.08) 50%,transparent 70%);
+  transform:translate(-50%,-50%);filter:blur(3px);
+  transition:width .3s,height .3s,opacity .35s}
+#co{position:fixed;pointer-events:none;z-index:9998;width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle,rgba(111,166,172,.05) 0%,transparent 65%);
+  transform:translate(-50%,-50%);filter:blur(8px);
+  transition:width .35s,height .35s,opacity .35s}
+
+/* ─── WRAP ─── */
+.wrap{position:relative;z-index:1}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:7rem 2rem 4rem;text-align:center;
+  position:relative;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--surface);border:1px solid var(--border-strong);
+  color:var(--muted);font-size:.72rem;font-weight:500;
+  padding:.3rem .85rem;border-radius:99px;margin-bottom:2rem;
+}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{
+  font-size:clamp(2.8rem,8vw,5.5rem);font-weight:800;color:var(--white);
+  line-height:1.05;letter-spacing:-2.5px;margin-bottom:1.2rem;
+  max-width:800px;
+}
+.hero h1 em{color:var(--green);font-style:normal}
+.hero-sub{
+  font-size:clamp(.95rem,1.8vw,1.1rem);color:var(--muted);
+  max-width:520px;margin:0 auto 3.5rem;font-weight:400;line-height:1.75;
+}
+.hero-stats{display:flex;gap:0;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:4rem;background:var(--surface)}
+.h-stat{padding:1rem 2rem;text-align:center;position:relative}
+.h-stat+.h-stat{border-right:1px solid var(--border)}
+.h-stat-n{font-size:1.8rem;font-weight:800;color:var(--white);line-height:1;font-variant-numeric:tabular-nums}
+.h-stat-l{font-size:.68rem;color:var(--muted);margin-top:.25rem;letter-spacing:.3px}
+
+/* ─── MOCKUP ─── */
+.mockup-wrap{width:100%;max-width:900px;margin:0 auto}
+.mockup{
+  background:var(--surface);border:1px solid var(--border-strong);
+  border-radius:var(--radius-lg);overflow:hidden;
+  box-shadow:0 0 0 1px rgba(255,255,255,.03),0 32px 80px rgba(0,0,0,.55);
+  transition:transform .5s ease;
+}
+.mockup:hover{transform:translateY(-4px)}
+.mockup-bar{
+  background:var(--surface2);
+  display:flex;align-items:center;gap:.6rem;
+  padding:.6rem 1rem;border-bottom:1px solid var(--border);
+}
+.dot{width:9px;height:9px;border-radius:50%}
+.dot-r{background:#FF5F57}.dot-y{background:#FEBC2E}.dot-g{background:#28C840}
+.mockup-tabs{display:flex;gap:0;margin-right:1rem}
+.tab{font-size:.68rem;padding:.28rem .85rem;color:var(--muted);border-radius:5px;cursor:pointer;transition:.15s;white-space:nowrap;font-weight:500}
+.tab.active{background:rgba(111,166,172,.1);color:var(--green)}
+.tab:hover:not(.active){color:var(--text)}
+.mockup-body{display:grid;grid-template-columns:185px 1fr 165px;min-height:300px}
+
+/* sidebar */
+.mockup-sidebar{background:rgba(0,0,0,.2);border-left:1px solid var(--border);padding:.7rem;display:flex;flex-direction:column;gap:.2rem}
+.sb-section{font-size:.56rem;color:var(--muted2);letter-spacing:1.8px;text-transform:uppercase;padding:.3rem .6rem;margin-top:.4rem}
+.sb-item{font-size:.68rem;color:var(--muted);padding:.38rem .65rem;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:.45rem;transition:.15s;user-select:none}
+.sb-item:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.sb-item.active{background:var(--green-bg);color:var(--green)}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:var(--muted2);flex-shrink:0}
+.sb-item.active .sb-dot{background:var(--green)}
+.sb-badge{font-size:.5rem;background:var(--green-bg);color:var(--green);padding:.08rem .3rem;border-radius:3px;margin-right:auto;font-weight:600}
+
+/* main */
+.mockup-main{padding:.85rem;display:flex;flex-direction:column;gap:.65rem}
+.mockup-header{display:flex;align-items:center;justify-content:space-between}
+.mockup-title{font-size:.75rem;font-weight:700;color:var(--white)}
+.mockup-sub{font-size:.6rem;color:var(--muted)}
+.mockup-zones{display:grid;gap:.5rem;flex:1}
+.layout-2x2{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
+.layout-3col{grid-template-columns:1.4fr 1fr 1fr}
+.layout-main-side{grid-template-columns:1.6fr 1fr;grid-template-rows:1fr 1fr}
+
+.zone{background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:8px;padding:.6rem;overflow:hidden}
+.zone-lbl{font-size:.57rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.4rem;display:flex;align-items:center;gap:.35rem;font-weight:500}
+.zone-lbl::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
+
+.d-bars{display:flex;gap:.28rem;align-items:flex-end;height:48px}
+.d-bar{flex:1;border-radius:2px 2px 0 0;background:linear-gradient(to top,#5A9298,#6FA6AC);opacity:.7;animation:ba 2.5s ease-in-out infinite alternate}
+@keyframes ba{from{opacity:.5;transform:scaleY(.9)}to{opacity:.85;transform:scaleY(1)}}
+.d-kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:.3rem;margin-bottom:.3rem}
+.d-kpi{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:5px;padding:.3rem .4rem}
+.d-kpi-val{font-size:.82rem;font-weight:700;color:var(--white)}
+.d-kpi-lbl{font-size:.5rem;color:var(--muted);margin-top:.08rem}
+.d-kpi-chg{font-size:.5rem;color:var(--green)}
+.canvas-zone{display:flex;align-items:center;justify-content:center;height:100%}
+.ai-msgs{display:flex;flex-direction:column;gap:.28rem}
+.ai-msg{font-size:.6rem;padding:.3rem .42rem;border-radius:6px;line-height:1.4;animation:msgF 3.5s ease infinite}
+@keyframes msgF{0%,100%{opacity:.6}50%{opacity:1}}
+.ai-msg.in{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);max-width:88%}
+.ai-msg.out{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green);align-self:flex-end;max-width:88%}
+.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:.22rem}
+.share-item{border-radius:5px;height:30px;display:flex;align-items:center;justify-content:center;font-size:.56rem;font-weight:600;border:1px solid var(--border)}
+
+/* right panel */
+.mockup-right{background:rgba(0,0,0,.15);border-right:1px solid var(--border);padding:.65rem;display:flex;flex-direction:column;gap:.45rem}
+.rw{background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:7px;padding:.5rem .55rem}
+.rw-lbl{font-size:.56rem;color:var(--muted);letter-spacing:.8px;margin-bottom:.22rem;text-transform:uppercase;font-weight:500}
+.rw-val{font-size:1.05rem;font-weight:800;color:var(--white);line-height:1}
+.rw-sub{font-size:.56rem;color:var(--muted);margin-top:.12rem}
+.rw-green{color:var(--green)}
+.u-dots{display:flex;gap:.15rem;flex-wrap:wrap;margin-top:.3rem}
+.u-av{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:700;color:var(--white)}
+.progress-bar{height:3px;background:rgba(255,255,255,.06);border-radius:1.5px;overflow:hidden;margin-top:.3rem}
+.progress-fill{height:100%;border-radius:1.5px;background:var(--green)}
+
+/* ─── SECTION ─── */
+.section{padding:6rem 2rem;max-width:1020px;margin:0 auto;position:relative;z-index:1}
+.eyebrow{font-size:.68rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:.6rem;display:flex;align-items:center;gap:.6rem}
+.eyebrow::before{content:'';display:inline-block;width:20px;height:1.5px;background:var(--green);border-radius:1px}
+h2.sec-title{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;color:var(--white);margin-bottom:.9rem;line-height:1.15;letter-spacing:-1px}
+.sec-intro{color:var(--muted);font-size:.95rem;max-width:580px;margin-bottom:3rem;line-height:1.75}
+
+/* ─── ARCH LAYERS ─── */
+.arch-layers{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;margin-bottom:1.8rem}
+@media(max-width:700px){.arch-layers{grid-template-columns:1fr 1fr}}
+.arch-layer{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:1.4rem 1.2rem;
+  text-align:center;transition:border-color .2s,transform .2s;cursor:default;
+}
+.arch-layer:hover{transform:translateY(-3px)}
+.arch-layer-icon{font-size:1.6rem;margin-bottom:.7rem}
+.arch-layer-name{font-size:.88rem;font-weight:700;margin-bottom:.35rem}
+.arch-layer-desc{font-size:.75rem;color:var(--muted);line-height:1.6;margin-bottom:.8rem}
+.arch-layer-tags{display:flex;flex-direction:column;gap:.25rem;align-items:center}
+.arch-tag{font-size:.6rem;padding:.15rem .45rem;border-radius:4px;background:rgba(255,255,255,.05);color:var(--text);font-weight:500}
+.arch-flow{display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap;margin-top:1.2rem}
+.arch-flow-item{font-size:.72rem;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:.28rem .7rem;border-radius:99px}
+.arch-flow-arrow{color:var(--muted2);font-size:.8rem}
+
+/* ─── CAP CARDS ─── */
+.cap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.2rem}
+.cap-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:1.6rem;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:border-color .2s,transform .25s,box-shadow .25s;
+}
+.cap-card:hover{transform:translateY(-4px);border-color:var(--border-strong);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.cap-card.open{border-color:rgba(111,166,172,.3);box-shadow:0 0 0 1px rgba(111,166,172,.1)}
+/* top accent line */
+.cap-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:var(--c,var(--green));opacity:0;transition:opacity .25s}
+.cap-card.open::before,.cap-card:hover::before{opacity:1}
+.cap-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem}
+.cap-icon-wrap{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.cap-head-right{display:flex;flex-direction:column;align-items:flex-end;gap:.4rem}
+.cap-status{font-size:.58rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:.18rem .5rem;border-radius:99px}
+.status-core{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.status-ai{background:rgba(124,147,160,.08);color:var(--blue);border:1px solid rgba(124,147,160,.2)}
+.status-hw{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(179,164,136,.2)}
+.cap-toggle{width:22px;height:22px;border-radius:50%;border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:.72rem;color:var(--muted);transition:all .25s;background:rgba(255,255,255,.03)}
+.cap-card.open .cap-toggle{background:var(--green-bg);border-color:var(--green-border);color:var(--green);transform:rotate(45deg)}
+.cap-title{font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.4rem}
+.cap-desc{font-size:.82rem;color:var(--muted);line-height:1.65}
+.cap-hint{font-size:.62rem;color:var(--muted2);margin-top:.6rem;opacity:.7}
+.cap-expand{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.16,1,.3,1),opacity .4s ease;opacity:0}
+.cap-card.open .cap-expand{max-height:280px;opacity:1}
+.cap-card.open .cap-hint{display:none}
+.cap-expand-inner{padding-top:1rem;border-top:1px solid var(--border);margin-top:1rem}
+.cap-features{display:flex;flex-direction:column;gap:.32rem;margin-bottom:1rem}
+.cap-feature{font-size:.78rem;color:var(--text);display:flex;align-items:flex-start;gap:.45rem;line-height:1.5}
+.cap-feature::before{content:'✓';color:var(--green);flex-shrink:0;font-weight:700;font-size:.7rem;margin-top:.1rem}
+.complexity-row{border-top:1px solid var(--border);padding-top:.8rem}
+.complexity-label{font-size:.6rem;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin-bottom:.35rem;display:flex;justify-content:space-between}
+.complexity-bar{height:3px;background:rgba(255,255,255,.06);border-radius:1.5px;overflow:hidden}
+.complexity-fill{height:100%;border-radius:1.5px;background:var(--green);transition:width 1.2s cubic-bezier(.16,1,.3,1)}
+
+/* ─── USE CASES ─── */
+.uc-list{display:flex;flex-direction:column;gap:2rem}
+.uc-block{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:border-color .2s}
+.uc-block:hover{border-color:var(--border-strong)}
+.uc-block:nth-child(even){direction:ltr}
+.uc-block:nth-child(even) .uc-content{direction:rtl}
+.uc-visual-panel{min-height:280px;display:flex;align-items:center;justify-content:center;padding:1.5rem;position:relative;overflow:hidden}
+.uc-content{padding:2rem;direction:rtl}
+.uc-scenario-tag{font-size:.62rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem}
+.uc-title{font-size:1.15rem;font-weight:800;color:var(--white);margin-bottom:.7rem;line-height:1.3}
+.uc-desc{font-size:.84rem;color:var(--muted);line-height:1.75;margin-bottom:1.1rem}
+.uc-modules{display:flex;gap:.35rem;flex-wrap:wrap}
+.uc-module{font-size:.6rem;font-weight:600;padding:.2rem .5rem;border-radius:4px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+
+/* mini mockup inside UC */
+.mini-screen{width:100%;max-width:280px;background:var(--bg);border:1px solid var(--border-strong);border-radius:10px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.mini-bar-row{background:var(--surface2);padding:.38rem .55rem;display:flex;align-items:center;gap:.35rem;border-bottom:1px solid var(--border)}
+.mini-dot{width:6px;height:6px;border-radius:50%}
+.mini-bar-label{font-size:.52rem;color:var(--muted);margin-right:.4rem}
+
+.wr-zones{display:grid;grid-template-columns:1fr 1fr;gap:.32rem}
+.wr-zone{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:5px;padding:.38rem;min-height:44px}
+.wr-zlbl{font-size:.46rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:.22rem;font-weight:500}
+.wr-bars{display:flex;gap:.18rem;align-items:flex-end;height:20px}
+.wr-b{flex:1;border-radius:1px 1px 0 0;background:linear-gradient(to top,#5A9298,#6FA6AC);animation:ba 2s ease-in-out infinite alternate}
+.wr-canvas-mini{display:flex;align-items:center;justify-content:center;height:100%}
+.wr-ai-line{height:3.5px;border-radius:2px;margin-bottom:.18rem;animation:mfade 2s ease-in-out infinite}
+@keyframes mfade{0%,100%{opacity:.35}50%{opacity:.85}}
+.wr-avatars{display:flex;gap:.12rem;flex-wrap:wrap}
+.wr-av{width:13px;height:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.38rem;font-weight:700;color:var(--white)}
+
+/* exec dashboard */
+.ex-kpis{display:grid;grid-template-columns:1fr 1fr;gap:.28rem;margin-bottom:.32rem}
+.ex-kpi{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;padding:.28rem .32rem}
+.ex-kpi-v{font-size:.8rem;font-weight:700;color:var(--white)}
+.ex-kpi-l{font-size:.46rem;color:var(--muted)}
+.ex-chart{display:flex;gap:.18rem;align-items:flex-end;height:28px}
+.ex-cb{flex:1;border-radius:1px 1px 0 0;animation:ba 3s ease-in-out infinite alternate}
+.ex-ai-box{background:var(--blue-bg);border:1px solid rgba(124,147,160,.2);border-radius:4px;padding:.28rem .38rem;margin-top:.28rem}
+.ex-ai-text{font-size:.5rem;color:var(--blue);line-height:1.4}
+
+/* cc-big */
+.cc-big{background:var(--bg);border:1px solid var(--border-strong);border-radius:10px;overflow:hidden;width:100%;max-width:310px;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.cc-titlebar{background:var(--surface2);padding:.45rem .7rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.45rem}
+.cc-titlebar-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.5s infinite;flex-shrink:0}
+.cc-titlebar-text{font-size:.58rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-zones{display:grid;grid-template-columns:1fr 1fr;gap:.38rem;padding:.5rem}
+.cc-zone{border-radius:6px;border:1px solid var(--border);padding:.42rem .48rem;display:flex;flex-direction:column;gap:.28rem;min-height:60px}
+.cc-zone-lbl{font-size:.52rem;text-transform:uppercase;letter-spacing:1px;font-weight:600;line-height:1;margin-bottom:.08rem}
+.cc-bar-group{display:flex;gap:.16rem;align-items:flex-end;height:24px}
+.cc-tiny-bar{flex:1;border-radius:2px 2px 0 0;animation:ba 2.5s ease-in-out infinite alternate}
+.cc-brow{display:flex;align-items:center;justify-content:space-between;font-size:.52rem;padding:.08rem 0}
+.cc-brow-dept{color:var(--text)}
+.cc-brow-val{color:var(--white);font-weight:600}
+.cc-brow-status{font-size:.46rem;padding:.05rem .22rem;border-radius:3px}
+.cc-ok{background:var(--green-bg);color:var(--green)}
+.cc-warn{background:var(--amber-bg);color:var(--amber)}
+.cc-ai-text{font-size:.54rem;color:var(--blue);line-height:1.45}
+
+/* ─── HARDWARE ─── */
+.hw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.1rem}
+.hw-card{-webkit-perspective:900px;perspective:900px;cursor:pointer;height:230px;position:relative}
+.hw-card-inner{position:relative;width:100%;height:100%;-webkit-transform-style:preserve-3d;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.4,0,.2,1);border-radius:var(--radius-lg)}
+.hw-card:hover .hw-card-inner{transform:rotateY(180deg)}
+.hw-card-front,.hw-card-back{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;background:var(--surface);border-radius:var(--radius-lg);display:flex;flex-direction:column}
+.hw-card-front{align-items:center;justify-content:flex-start;text-align:center;padding:1.4rem 1.1rem 1rem;border:1px solid var(--border)}
+.hw-card-back{-webkit-transform:rotateY(180deg);transform:rotateY(180deg);align-items:flex-start;justify-content:flex-start;padding:1.2rem 1.1rem;border:1px solid rgba(111,166,172,.2);direction:rtl;overflow:hidden}
+.hw-visual{font-size:2rem;margin-bottom:.55rem;display:block;line-height:1;transition:transform .3s}
+.hw-card:hover .hw-visual{transform:scale(1.08) translateY(-2px)}
+.hw-name{font-size:.9rem;font-weight:700;color:var(--white);margin-bottom:.3rem}
+.hw-desc{font-size:.72rem;color:var(--muted);line-height:1.55;direction:rtl}
+.compat-lbl{font-size:.56rem;color:var(--muted);letter-spacing:.8px;text-transform:uppercase;margin:.6rem 0 .22rem;display:flex;justify-content:space-between;width:100%}
+.compat-bar{height:2.5px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;width:100%}
+.compat-fill{height:100%;border-radius:2px;background:var(--green);transition:width 1.2s cubic-bezier(.16,1,.3,1)}
+.hw-flip-hint{font-size:.5rem;color:var(--muted2);margin-top:auto;opacity:.4;letter-spacing:.4px}
+.hw-back-title{font-size:.86rem;font-weight:700;color:var(--white);margin-bottom:.55rem;padding-bottom:.45rem;border-bottom:1px solid var(--border);width:100%}
+.hw-back-items{display:flex;flex-direction:column;gap:.28rem;width:100%}
+.hw-back-item{font-size:.7rem;color:var(--text);display:flex;align-items:center;gap:.4rem;line-height:1.35}
+.hw-back-item .chk{width:14px;height:14px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:.56rem;flex-shrink:0;font-weight:700}
+.hw-back-item:first-child .chk{background:var(--green-bg);color:var(--green)}
+.hw-back-item:not(:first-child) .chk{background:rgba(255,255,255,.06);color:var(--muted)}
+
+/* ─── TIMELINE ─── */
+.tl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-bottom:1.2rem;position:relative}
+.tl-grid::before{content:'';position:absolute;top:24px;right:10%;left:10%;height:1.5px;background:linear-gradient(to left,var(--green-dim),var(--amber),var(--blue));z-index:0;opacity:.5}
+.tl-phase{position:relative;z-index:1;text-align:center}
+.tl-dot{width:16px;height:16px;border-radius:50%;margin:0 auto 1.2rem;border:2.5px solid var(--bg);position:relative;z-index:2}
+.tl-card{background:var(--surface);border-radius:var(--radius-lg);padding:1.3rem;border:1px solid var(--border);text-align:right;transition:border-color .2s}
+.tl-card:hover{border-color:var(--border-strong)}
+.tl-phase-num{font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:.18rem}
+.tl-phase-name{font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.18rem}
+.tl-weeks{font-size:.76rem;font-weight:600;margin-bottom:.7rem}
+.tl-items{list-style:none;display:flex;flex-direction:column;gap:.28rem}
+.tl-items li{font-size:.76rem;color:var(--muted);display:flex;align-items:flex-start;gap:.38rem}
+.tl-items li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:.38rem;opacity:.6}
+
+/* total strip */
+.tl-total{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:1.6rem 2rem;
+  display:grid;grid-template-columns:1fr auto 1fr auto 1fr;
+  align-items:center;position:relative;overflow:hidden;
+}
+.tl-total::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1.5px;
+  background:linear-gradient(90deg,var(--blue),var(--green),var(--amber));
+}
+.tl-stat{text-align:center}
+.tl-stat-num{font-size:2.2rem;font-weight:800;line-height:1;margin-bottom:.3rem}
+.tl-stat-lbl{font-size:.68rem;color:var(--muted);letter-spacing:.3px}
+.tl-divider{width:1px;height:44px;background:var(--border)}
+
+/* ─── SCOPE ─── */
+.scope-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.9rem;margin-bottom:3rem}
+.scope-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1rem;text-align:center;transition:border-color .2s,transform .2s}
+.scope-item:hover{border-color:var(--border-strong);transform:translateY(-2px)}
+.scope-num{font-size:1.9rem;font-weight:800;color:var(--white);transition:transform .25s}
+.scope-item:hover .scope-num{transform:scale(1.1)}
+.scope-lbl{font-size:.68rem;color:var(--muted);margin-top:.18rem;line-height:1.4}
+
+/* ─── DIVIDER ─── */
+.divider{width:100%;height:1px;background:var(--border);margin:0 auto;max-width:1020px}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .55s ease,transform .55s ease}
+.reveal.shown{opacity:1;transform:translateY(0)}
+
+/* ─── PARTICLE ─── */
+.particle{position:fixed;pointer-events:none;border-radius:50%;z-index:1;animation:floatP linear forwards}
+@keyframes floatP{0%{transform:translateY(0) scale(1);opacity:.8}100%{transform:translateY(-100px) scale(0);opacity:0}}
+
+@media(max-width:768px){
+  .mockup-body{grid-template-columns:1fr}.mockup-sidebar,.mockup-right{display:none}
+  .tl-grid{grid-template-columns:1fr}.tl-grid::before{display:none}
+  .nav-links{display:none}
+  .uc-block{grid-template-columns:1fr}
+  .uc-block:nth-child(even){direction:rtl}
+  .arch-layers{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div id="ch"></div><div id="co"></div>
+
+<nav>
+  <div class="brand">Work<em>Space</em> OS</div>
+  <ul class="nav-links">
+    <li><a href="#architecture">ארכיטקטורה</a></li>
+    <li><a href="#capabilities">יכולות</a></li>
+    <li><a href="#usecases">שימוש</a></li>
+    <li><a href="#hardware">חומרה</a></li>
+    <li><a href="#scope">היקף</a></li>
+  </ul>
+  <div class="nav-pill">Enterprise Platform</div>
+</nav>
+
+<div class="wrap">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><span class="hero-badge-dot"></span>Enterprise Workspace Platform</div>
+  <h1>סביבת העבודה<br>של <em>הארגון שלכם</em></h1>
+  <p class="hero-sub">פלטפורמת ענן ארגונית עם מרחבי עבודה שיתופיים, AI מובנה, ותמיכה מלאה בכל סוג מסך. מערכת שלמה, לא אפליקציה.</p>
+  <div class="hero-stats">
+    <div class="h-stat"><div class="h-stat-n" data-val="6">0</div><div class="h-stat-l">מודולים מרכזיים</div></div>
+    <div class="h-stat"><div class="h-stat-n" data-val="4">0</div><div class="h-stat-l">סוגי חומרה</div></div>
+    <div class="h-stat"><div class="h-stat-n" data-val="3">0</div><div class="h-stat-l">שכבות AI</div></div>
+    <div class="h-stat"><div class="h-stat-n" data-val="∞">0</div><div class="h-stat-l">מרחבי עבודה</div></div>
+  </div>
+
+  <div class="mockup-wrap reveal">
+    <div class="mockup">
+      <div class="mockup-bar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <div class="mockup-tabs" id="mockupTabs">
+          <div class="tab active" data-ws="0">משרד התחבורה</div>
+          <div class="tab" data-ws="1">משרד החדשנות</div>
+          <div class="tab" data-ws="2">אגף התקציבים</div>
+        </div>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-sidebar">
+          <div class="sb-section">Workspaces</div>
+          <div class="sb-item active" data-ws="0"><div class="sb-dot"></div>משרד התחבורה<div class="sb-badge">Live</div></div>
+          <div class="sb-item" data-ws="1"><div class="sb-dot"></div>משרד החדשנות</div>
+          <div class="sb-item" data-ws="2"><div class="sb-dot"></div>אגף התקציבים</div>
+          <div class="sb-section">Tools</div>
+          <div class="sb-item"><div class="sb-dot"></div>Dashboard</div>
+          <div class="sb-item"><div class="sb-dot"></div>Canvas</div>
+          <div class="sb-item"><div class="sb-dot"></div>AI Assistant</div>
+          <div class="sb-item"><div class="sb-dot"></div>Screen Share</div>
+        </div>
+        <div class="mockup-main" id="mockupMain"></div>
+        <div class="mockup-right" id="mockupRight"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ARCHITECTURE -->
+<section class="section" id="architecture">
+  <div class="reveal">
+    <div class="eyebrow">System Design</div>
+    <h2 class="sec-title">ארכיטקטורת המערכת</h2>
+    <p class="sec-intro">WorkSpace OS בנוי על ארבע שכבות עצמאיות. כל שכבה מוגדרת, מדרגית, ומתקשרת עם השכבה שמתחתיה בלבד.</p>
+    <div class="arch-layers">
+      <div class="arch-layer" style="border-color:rgba(124,147,160,.25)">
+        <div class="arch-layer-icon">📱</div>
+        <div class="arch-layer-name" style="color:var(--blue)">Client</div>
+        <div class="arch-layer-desc">ממשקי משתמש מותאמים לכל סוג מסך עם touch optimization ו-offline support.</div>
+        <div class="arch-layer-tags"><span class="arch-tag">React / Next.js</span><span class="arch-tag">PWA</span><span class="arch-tag">WebXR</span></div>
+      </div>
+      <div class="arch-layer" style="border-color:rgba(111,166,172,.25)">
+        <div class="arch-layer-icon">⚙️</div>
+        <div class="arch-layer-name" style="color:var(--green)">Application</div>
+        <div class="arch-layer-desc">לוגיקה עסקית, מרחבים, Canvas, פגישות, הרשאות, ו-real-time collaboration.</div>
+        <div class="arch-layer-tags"><span class="arch-tag">Node.js</span><span class="arch-tag">WebSocket</span><span class="arch-tag">RBAC</span></div>
+      </div>
+      <div class="arch-layer" style="border-color:rgba(179,164,136,.25)">
+        <div class="arch-layer-icon">🔧</div>
+        <div class="arch-layer-name" style="color:var(--amber)">Services</div>
+        <div class="arch-layer-desc">מיקרו-שירותים עצמאיים: AI orchestration, עיבוד מדיה, analytics, וניהול קבצים.</div>
+        <div class="arch-layer-tags"><span class="arch-tag">AI APIs</span><span class="arch-tag">FFmpeg</span><span class="arch-tag">Queue</span></div>
+      </div>
+      <div class="arch-layer" style="border-color:rgba(168,140,140,.25)">
+        <div class="arch-layer-icon">🗄️</div>
+        <div class="arch-layer-name" style="color:var(--rose)">Data</div>
+        <div class="arch-layer-desc">תשתית נתונים מדרגית, בסיס נתונים, אחסון, cache, search index, ו-audit log.</div>
+        <div class="arch-layer-tags"><span class="arch-tag">PostgreSQL</span><span class="arch-tag">Redis</span><span class="arch-tag">S3</span></div>
+      </div>
+    </div>
+    <div class="arch-flow">
+      <span class="arch-flow-item" style="color:var(--blue)">Client</span>
+      <span class="arch-flow-arrow">→</span>
+      <span class="arch-flow-item" style="color:var(--green)">Application</span>
+      <span class="arch-flow-arrow">→</span>
+      <span class="arch-flow-item" style="color:var(--amber)">Services</span>
+      <span class="arch-flow-arrow">→</span>
+      <span class="arch-flow-item" style="color:var(--rose)">Data</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CAPABILITIES -->
+<section class="section" id="capabilities">
+  <div class="reveal">
+    <div class="eyebrow">Core Modules</div>
+    <h2 class="sec-title">6 מודולים מרכזיים</h2>
+    <p class="sec-intro">כל מודול הוא יחידה עצמאית הכוללת ממשק, לוגיקה, data model ו-API. הם פועלים יחד ומשלימים זה את זה.</p>
+    <div class="cap-grid">
+
+      <div class="cap-card" style="--c:var(--green)">
+        <div class="cap-head">
+          <div class="cap-icon-wrap" style="background:var(--green-bg)">☁️</div>
+          <div class="cap-head-right"><div class="cap-status status-core">Core</div><div class="cap-toggle">+</div></div>
+        </div>
+        <div class="cap-title">Workspace Engine</div>
+        <div class="cap-desc">המנוע המרכזי של הפלטפורמה. אחראי על ניהול מרחבי עבודה בענן, שיתוף משתמשים, והסנכרון השוטף בין כל המכשירים.</div>
+        <div class="cap-hint">לחץ לפרטים</div>
+        <div class="cap-expand"><div class="cap-expand-inner">
+          <div class="cap-features">
+            <div class="cap-feature">יצירת מרחבים עם תפקידים ורמות גישה גרנולריות</div>
+            <div class="cap-feature">הזמנת משתמשים עם תמיכה ב-SSO ארגוני</div>
+            <div class="cap-feature">עריכה בו-זמנית עם Operational Transformation</div>
+            <div class="cap-feature">היסטוריית גרסאות ותיעוד שינויים מלא</div>
+          </div>
+          <div class="complexity-row">
+            <div class="complexity-label"><span>מורכבות פיתוח</span><span style="color:var(--green)">גבוהה</span></div>
+            <div class="complexity-bar"><div class="complexity-fill" style="width:88%"></div></div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="cap-card" style="--c:var(--blue)">
+        <div class="cap-head">
+          <div class="cap-icon-wrap" style="background:var(--blue-bg)">🤖</div>
+          <div class="cap-head-right"><div class="cap-status status-ai">AI Layer</div><div class="cap-toggle">+</div></div>
+        </div>
+        <div class="cap-title">AI Hub</div>
+        <div class="cap-desc">שכבת AI שמחברת מספר מודלים, ChatGPT, Gemini ו-Jarvis, עם הקשר ייעודי לכל מרחב עבודה ולכל תהליך.</div>
+        <div class="cap-hint">לחץ לפרטים</div>
+        <div class="cap-expand"><div class="cap-expand-inner">
+          <div class="cap-features">
+            <div class="cap-feature">Context מותאם לכל workspace בנפרד</div>
+            <div class="cap-feature">סיכום פגישות אוטומטי עם חלוקת משימות</div>
+            <div class="cap-feature">ניתוח דשבורדים עם המלצות בזמן אמת</div>
+            <div class="cap-feature">ניתוב חכם בין מודלים לפי סוג המשימה</div>
+          </div>
+          <div class="complexity-row">
+            <div class="complexity-label"><span>מורכבות פיתוח</span><span style="color:var(--blue)">גבוהה מאוד</span></div>
+            <div class="complexity-bar"><div class="complexity-fill" style="width:95%;background:var(--blue)"></div></div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="cap-card" style="--c:var(--amber)">
+        <div class="cap-head">
+          <div class="cap-icon-wrap" style="background:var(--amber-bg)">🎨</div>
+          <div class="cap-head-right"><div class="cap-status status-core">Core</div><div class="cap-toggle">+</div></div>
+        </div>
+        <div class="cap-title">Canvas</div>
+        <div class="cap-desc">לוח עבודה ויזואלי לשרטוט, תרשימי זרימה ומפות רעיונות, עם עריכה משותפת בזמן אמת בין כל המכשירים המחוברים.</div>
+        <div class="cap-hint">לחץ לפרטים</div>
+        <div class="cap-expand"><div class="cap-expand-inner">
+          <div class="cap-features">
+            <div class="cap-feature">Vector rendering עם תמיכה מלאה ב-touch gestures</div>
+            <div class="cap-feature">שיתוף cursor וכלי עריכה בו-זמנית</div>
+            <div class="cap-feature">ייבוא וייצוא בפורמטים SVG, PNG ו-PDF</div>
+            <div class="cap-feature">ספריית תבניות ו-components מוכנים</div>
+          </div>
+          <div class="complexity-row">
+            <div class="complexity-label"><span>מורכבות פיתוח</span><span style="color:var(--amber)">בינונית-גבוהה</span></div>
+            <div class="complexity-bar"><div class="complexity-fill" style="width:72%;background:var(--amber)"></div></div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="cap-card" style="--c:var(--green)">
+        <div class="cap-head">
+          <div class="cap-icon-wrap" style="background:var(--green-bg)">📊</div>
+          <div class="cap-head-right"><div class="cap-status status-core">Core</div><div class="cap-toggle">+</div></div>
+        </div>
+        <div class="cap-title">Dashboard Studio</div>
+        <div class="cap-desc">מנוע דשבורדים חי המתחבר למקורות נתונים חיצוניים, מציג KPIs בזמן אמת, ותומך בחלוקת מסך ענק לאזורים עצמאיים.</div>
+        <div class="cap-hint">לחץ לפרטים</div>
+        <div class="cap-expand"><div class="cap-expand-inner">
+          <div class="cap-features">
+            <div class="cap-feature">חיבורי API ל-CRM, ERP וכלים ארגוניים</div>
+            <div class="cap-feature">Widget builder עם drag-and-drop</div>
+            <div class="cap-feature">חלוקת מסך לאזורים עצמאיים ונפרדים</div>
+            <div class="cap-feature">התראות ו-threshold triggers אוטומטיים</div>
+          </div>
+          <div class="complexity-row">
+            <div class="complexity-label"><span>מורכבות פיתוח</span><span style="color:var(--green)">בינונית</span></div>
+            <div class="complexity-bar"><div class="complexity-fill" style="width:65%"></div></div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="cap-card" style="--c:var(--blue)">
+        <div class="cap-head">
+          <div class="cap-icon-wrap" style="background:var(--blue-bg)">📡</div>
+          <div class="cap-head-right"><div class="cap-status status-ai">Core</div><div class="cap-toggle">+</div></div>
+        </div>
+        <div class="cap-title">Multi-Screen Share</div>
+        <div class="cap-desc">שיתוף מסך דו-כיווני ממספר מכשירים בו-זמנית. כל מכשיר יכול להוות מקור תוכן עצמאי לאזור שונה על המסך הגדול.</div>
+        <div class="cap-hint">לחץ לפרטים</div>
+        <div class="cap-expand"><div class="cap-expand-inner">
+          <div class="cap-features">
+            <div class="cap-feature">WebRTC peer-to-peer עם latency נמוך</div>
+            <div class="cap-feature">ניתוב תוכן לפי zone, כל מכשיר לאזורו</div>
+            <div class="cap-feature">שליטה touch מהמסך הגדול על המכשירים</div>
+            <div class="cap-feature">הקלטה ו-playback מובנים</div>
+          </div>
+          <div class="complexity-row">
+            <div class="complexity-label"><span>מורכבות פיתוח</span><span style="color:var(--blue)">גבוהה</span></div>
+            <div class="complexity-bar"><div class="complexity-fill" style="width:82%;background:var(--blue)"></div></div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="cap-card" style="--c:var(--rose)">
+        <div class="cap-head">
+          <div class="cap-icon-wrap" style="background:var(--rose-bg)">🗓️</div>
+          <div class="cap-head-right"><div class="cap-status status-hw">Integrated</div><div class="cap-toggle">+</div></div>
+        </div>
+        <div class="cap-title">Meeting Intelligence</div>
+        <div class="cap-desc">ניהול פגישות מקצה לקצה, קביעה, ניהול בזמן אמת, תמלול חכם, וחלוקת משימות אוטומטית לכל משתתף.</div>
+        <div class="cap-hint">לחץ לפרטים</div>
+        <div class="cap-expand"><div class="cap-expand-inner">
+          <div class="cap-features">
+            <div class="cap-feature">אינטגרציה ליומן עם תזמון חכם</div>
+            <div class="cap-feature">תמלול חי עם זיהוי דוברים</div>
+            <div class="cap-feature">AI שמפיק action items ו-follow-up</div>
+            <div class="cap-feature">ניתוח engagement ומדדי פגישה</div>
+          </div>
+          <div class="complexity-row">
+            <div class="complexity-label"><span>מורכבות פיתוח</span><span style="color:var(--rose)">בינונית</span></div>
+            <div class="complexity-bar"><div class="complexity-fill" style="width:60%;background:var(--rose)"></div></div>
+          </div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- USE CASES -->
+<section class="section" id="usecases">
+  <div class="reveal">
+    <div class="eyebrow">Use Cases</div>
+    <h2 class="sec-title">תרחישי שימוש מרכזיים</h2>
+    <p class="sec-intro">כל תרחיש מערב שילוב של מודולים שפועלים יחד, ומדגים את העומק האמיתי של הפלטפורמה.</p>
+    <div class="uc-list">
+
+      <!-- UC1 -->
+      <div class="uc-block">
+        <div class="uc-visual-panel" style="background:linear-gradient(135deg,rgba(111,166,172,.06),rgba(124,147,160,.04))">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:20px 20px;opacity:.5"></div>
+          <div class="mini-screen" style="position:relative;z-index:1">
+            <div class="mini-bar-row"><div class="mini-dot" style="background:#FF5F57"></div><div class="mini-dot" style="background:#FEBC2E"></div><div class="mini-dot" style="background:#28C840"></div><span class="mini-bar-label">יום העשרה, תחבורה</span></div>
+            <div style="padding:.52rem;display:grid;grid-template-columns:1fr 1fr;gap:.3rem">
+              <div class="wr-zone"><div class="wr-zlbl">Dashboard</div><div class="wr-bars"><div class="wr-b" style="height:18px"></div><div class="wr-b" style="height:26px;animation-delay:.2s"></div><div class="wr-b" style="height:14px;animation-delay:.4s"></div><div class="wr-b" style="height:30px;animation-delay:.6s"></div></div></div>
+              <div class="wr-zone"><div class="wr-zlbl">Canvas</div><div class="wr-canvas-mini"><svg width="70" height="36" viewBox="0 0 70 36"><rect x="2" y="2" width="20" height="12" rx="3" fill="none" stroke="rgba(111,166,172,.5)" stroke-width="1"/><rect x="27" y="2" width="20" height="12" rx="3" fill="none" stroke="rgba(124,147,160,.5)" stroke-width="1"/><rect x="14" y="22" width="20" height="12" rx="3" fill="none" stroke="rgba(179,164,136,.5)" stroke-width="1"/><line x1="12" y1="14" x2="17" y2="22" stroke="rgba(255,255,255,.2)" stroke-width=".8"/><line x1="37" y1="14" x2="30" y2="22" stroke="rgba(255,255,255,.2)" stroke-width=".8"/></svg></div></div>
+              <div class="wr-zone"><div class="wr-zlbl">AI</div><div style="display:flex;flex-direction:column;gap:.16rem"><div class="wr-ai-line" style="width:85%;background:rgba(111,166,172,.4)"></div><div class="wr-ai-line" style="width:60%;background:rgba(124,147,160,.35);animation-delay:.5s"></div><div class="wr-ai-line" style="width:75%;background:rgba(111,166,172,.3);animation-delay:1s"></div></div></div>
+              <div class="wr-zone"><div class="wr-zlbl">Participants</div><div class="wr-avatars"><div class="wr-av" style="background:#5A9298">א</div><div class="wr-av" style="background:#7C93A0">מ</div><div class="wr-av" style="background:#B3A488">ד</div><div class="wr-av" style="background:#A88C8C">ר</div><div class="wr-av" style="background:rgba(255,255,255,.12);font-size:.34rem">+8</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="uc-content">
+          <div class="uc-scenario-tag" style="color:var(--green)">תרחיש א</div>
+          <div class="uc-title">יום העשרה, משרד התחבורה</div>
+          <div class="uc-desc">עשרות משתתפים נכנסים למרחב עבודה אחד. כל אחד ממכשירו שלו. המסך הגדול מפוצל לארבעה אזורים עצמאיים: דשבורד נתונים, לוח עבודה משותף, AI שמנהל פרוטוקול, ותצוגת משתתפים חיה. כל שינוי מסונכרן בזמן אמת.</div>
+          <div class="uc-modules"><span class="uc-module">Workspace Engine</span><span class="uc-module">Canvas</span><span class="uc-module">AI Hub</span><span class="uc-module">Multi-Screen</span></div>
+        </div>
+      </div>
+
+      <!-- UC2 -->
+      <div class="uc-block">
+        <div class="uc-content">
+          <div class="uc-scenario-tag" style="color:var(--amber)">תרחיש ב</div>
+          <div class="uc-title">פגישת מנהלים, משרד החדשנות</div>
+          <div class="uc-desc">המסך מציג דשבורד KPIs בצד שמאל ולוח אסטרטגי בצד ימין. ה-AI מנתח את הנתונים בזמן אמת ומציע המלצות לפני שמישהו הספיק לשאול. המנהלים מקיימים דיון בעוד הנתונים מתעדכנים מולם.</div>
+          <div class="uc-modules"><span class="uc-module">Dashboard Studio</span><span class="uc-module">AI Hub</span><span class="uc-module">Meeting Intelligence</span></div>
+        </div>
+        <div class="uc-visual-panel" style="background:linear-gradient(135deg,rgba(179,164,136,.06),rgba(124,147,160,.04))">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:20px 20px;opacity:.5"></div>
+          <div class="mini-screen" style="position:relative;z-index:1">
+            <div class="mini-bar-row"><div class="mini-dot" style="background:#FF5F57"></div><div class="mini-dot" style="background:#FEBC2E"></div><div class="mini-dot" style="background:#28C840"></div><span class="mini-bar-label">פגישת מנהלים, חדשנות</span></div>
+            <div style="padding:.5rem">
+              <div class="ex-kpis"><div class="ex-kpi"><div class="ex-kpi-v">₪2.4M</div><div class="ex-kpi-l">תקציב רבעון</div></div><div class="ex-kpi"><div class="ex-kpi-v" style="color:var(--green)">87%</div><div class="ex-kpi-l">יעד ביצוע</div></div><div class="ex-kpi"><div class="ex-kpi-v">14</div><div class="ex-kpi-l">פרויקטים</div></div><div class="ex-kpi"><div class="ex-kpi-v" style="color:var(--amber)">3</div><div class="ex-kpi-l">סיכונים</div></div></div>
+              <div class="ex-chart"><div class="ex-cb" style="height:20px;background:linear-gradient(to top,#5A9298,#6FA6AC);animation-delay:.0s"></div><div class="ex-cb" style="height:32px;background:linear-gradient(to top,#5A9298,#6FA6AC);animation-delay:.2s"></div><div class="ex-cb" style="height:26px;background:linear-gradient(to top,#B3A488,#C7BB9C);animation-delay:.4s"></div><div class="ex-cb" style="height:38px;background:linear-gradient(to top,#5A9298,#6FA6AC);animation-delay:.6s"></div><div class="ex-cb" style="height:28px;background:linear-gradient(to top,#5A9298,#6FA6AC);animation-delay:.8s"></div></div>
+              <div class="ex-ai-box"><div class="ex-ai-text">AI: זוהה חריגה בפרויקט 3, מומלץ לדון בהקצאת משאבים לפני סוף הרבעון.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- UC3 -->
+      <div class="uc-block">
+        <div class="uc-visual-panel" style="background:linear-gradient(135deg,rgba(111,166,172,.05),rgba(168,140,140,.04));min-height:310px">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:20px 20px;opacity:.5"></div>
+          <div class="cc-big" style="position:relative;z-index:1">
+            <div class="cc-titlebar"><div class="cc-titlebar-dot"></div><span class="cc-titlebar-text">תכנון שנתי 2027, אגף התקציבים</span></div>
+            <div class="cc-zones">
+              <div class="cc-zone" style="border-color:rgba(124,147,160,.2)">
+                <div class="cc-zone-lbl" style="color:var(--blue)">תקציב לפי אגף</div>
+                <div class="cc-bar-group"><div class="cc-tiny-bar" style="height:20px;background:linear-gradient(to top,#7C93A0,#7C93A0)"></div><div class="cc-tiny-bar" style="height:30px;background:linear-gradient(to top,#7C93A0,#7C93A0);animation-delay:.2s"></div><div class="cc-tiny-bar" style="height:17px;background:linear-gradient(to top,#7C93A0,#7C93A0);animation-delay:.4s"></div><div class="cc-tiny-bar" style="height:27px;background:linear-gradient(to top,#7C93A0,#7C93A0);animation-delay:.6s"></div></div>
+              </div>
+              <div class="cc-zone" style="border-color:rgba(179,164,136,.2)">
+                <div class="cc-zone-lbl" style="color:var(--amber)">יעדים 2027</div>
+                <div class="cc-brow"><span class="cc-brow-dept">חינוך</span><span class="cc-brow-val">₪4.2M</span><span class="cc-brow-status cc-ok">אושר</span></div>
+                <div class="cc-brow"><span class="cc-brow-dept">בריאות</span><span class="cc-brow-val">₪6.8M</span><span class="cc-brow-status cc-warn">בדיון</span></div>
+                <div class="cc-brow"><span class="cc-brow-dept">תחבורה</span><span class="cc-brow-val">₪3.1M</span><span class="cc-brow-status cc-ok">אושר</span></div>
+              </div>
+              <div class="cc-zone" style="border-color:rgba(111,166,172,.2)">
+                <div class="cc-zone-lbl" style="color:var(--green)">Canvas, תכנון</div>
+                <svg width="100%" height="38" viewBox="0 0 100 38" style="display:block;margin-top:.2rem">
+                  <rect x="3" y="3" width="26" height="12" rx="3" fill="rgba(111,166,172,.1)" stroke="rgba(111,166,172,.5)" stroke-width="1.2"/><text x="16" y="12" font-size="5" fill="rgba(111,166,172,.9)" text-anchor="middle" font-family="Heebo">אגפים</text>
+                  <rect x="37" y="3" width="26" height="12" rx="3" fill="rgba(124,147,160,.1)" stroke="rgba(124,147,160,.5)" stroke-width="1.2"/><text x="50" y="12" font-size="5" fill="rgba(124,147,160,.9)" text-anchor="middle" font-family="Heebo">יעדים</text>
+                  <rect x="71" y="3" width="26" height="12" rx="3" fill="rgba(179,164,136,.1)" stroke="rgba(179,164,136,.5)" stroke-width="1.2"/><text x="84" y="12" font-size="5" fill="rgba(179,164,136,.9)" text-anchor="middle" font-family="Heebo">ביצוע</text>
+                  <rect x="20" y="23" width="26" height="12" rx="3" fill="rgba(111,166,172,.12)" stroke="rgba(111,166,172,.4)" stroke-width="1.2"/><text x="33" y="32" font-size="5" fill="rgba(111,166,172,.9)" text-anchor="middle" font-family="Heebo" font-weight="600">אישור</text>
+                  <line x1="16" y1="15" x2="25" y2="23" stroke="rgba(255,255,255,.15)" stroke-width=".8"/>
+                  <line x1="50" y1="15" x2="40" y2="23" stroke="rgba(255,255,255,.15)" stroke-width=".8"/>
+                  <line x1="84" y1="15" x2="74" y2="23" stroke="rgba(255,255,255,.15)" stroke-width=".8"/>
+                </svg>
+              </div>
+              <div class="cc-zone" style="border-color:rgba(124,147,160,.2)">
+                <div class="cc-zone-lbl" style="color:var(--blue)">AI ניתוח</div>
+                <div class="cc-ai-text">זוהה חריגה צפויה ב-Q3. מומלץ להגדיל רזרבה ב-8%.</div>
+                <div style="height:2.5px;border-radius:1.5px;background:linear-gradient(90deg,var(--blue),transparent);margin-top:.3rem;animation:mfade 2s infinite"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="uc-content">
+          <div class="uc-scenario-tag" style="color:var(--green)">תרחיש ג</div>
+          <div class="uc-title">תכנון שנתי 2027, אגף התקציבים</div>
+          <div class="uc-desc">המסך הגדול מוצג לצוות הנהלה בחדר. ארבעה אזורים עצמאיים: טבלת תקציבות לפי אגף, יעדי 2027 עם סטטוס אישור, מפת תכנון ב-Canvas, ו-AI שמנתח חריגות בזמן אמת. כל אחד יכול לערוך מהמכשיר שלו בזמן שהמסך הראשי מציג את התמונה הכוללת.</div>
+          <div class="uc-modules"><span class="uc-module">Dashboard Studio</span><span class="uc-module">Canvas</span><span class="uc-module">AI Hub</span><span class="uc-module">Multi-Screen</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HARDWARE -->
+<section class="section" id="hardware">
+  <div class="reveal">
+    <div class="eyebrow">Hardware Support</div>
+    <h2 class="sec-title">תמיכה בכל החומרה</h2>
+    <p class="sec-intro">WorkSpace OS מתאים את עצמו לכל סוג מסך, אותה חוויה, אותו מרחב, כל פלטפורמה.</p>
+    <div class="hw-grid">
+      <div class="hw-card">
+        <div class="hw-card-inner">
+          <div class="hw-card-front" style="border-color:rgba(124,147,160,.2)">
+            <span class="hw-visual">🖥️</span>
+            <div class="hw-name">Video Wall</div>
+            <div class="hw-desc">תמיכה במסכים מרובים, multi-zone split ו-4K rendering.</div>
+            <div class="compat-lbl"><span>תאימות</span><span style="color:var(--green)">מלאה</span></div>
+            <div class="compat-bar"><div class="compat-fill" style="width:100%"></div></div>
+            <div class="hw-flip-hint">Hover לפרטים</div>
+          </div>
+          <div class="hw-card-back">
+            <div class="hw-back-title" style="color:var(--blue)">Video Wall</div>
+            <div class="hw-back-items">
+              <div class="hw-back-item"><span class="chk">✓</span>4K UHD rendering בכל גודל</div>
+              <div class="hw-back-item"><span class="chk">✓</span>Multi-zone split עצמאי</div>
+              <div class="hw-back-item"><span class="chk">✓</span>HDMI, DisplayPort, NDI</div>
+              <div class="hw-back-item"><span class="chk">✓</span>ניהול תוכן מרחוק</div>
+              <div class="hw-back-item"><span class="chk">✓</span>תאימות לכל יצרן מסך</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hw-card">
+        <div class="hw-card-inner">
+          <div class="hw-card-front" style="border-color:rgba(179,164,136,.2)">
+            <span class="hw-visual">👆</span>
+            <div class="hw-name">Touch Display</div>
+            <div class="hw-desc">PCAP multi-touch עד 20 נקודות, gesture recognition.</div>
+            <div class="compat-lbl"><span>תאימות</span><span style="color:var(--green)">מלאה</span></div>
+            <div class="compat-bar"><div class="compat-fill" style="width:100%"></div></div>
+            <div class="hw-flip-hint">Hover לפרטים</div>
+          </div>
+          <div class="hw-card-back">
+            <div class="hw-back-title" style="color:var(--amber)">Touch Display</div>
+            <div class="hw-back-items">
+              <div class="hw-back-item"><span class="chk">✓</span>20 נקודות מגע בו-זמנית</div>
+              <div class="hw-back-item"><span class="chk">✓</span>Gesture recognition מלא</div>
+              <div class="hw-back-item"><span class="chk">✓</span>קיר ושולחן, אותה תוכנה</div>
+              <div class="hw-back-item"><span class="chk">✓</span>Haptic feedback API</div>
+              <div class="hw-back-item"><span class="chk">✓</span>גלישה, פינצ'ינג, סיבוב</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hw-card">
+        <div class="hw-card-inner">
+          <div class="hw-card-front" style="border-color:rgba(111,166,172,.2)">
+            <span class="hw-visual">💻</span>
+            <div class="hw-name">Desktop / Tablet</div>
+            <div class="hw-desc">Web app ו-native client. Windows, macOS, iPadOS.</div>
+            <div class="compat-lbl"><span>תאימות</span><span style="color:var(--green)">מלאה</span></div>
+            <div class="compat-bar"><div class="compat-fill" style="width:100%"></div></div>
+            <div class="hw-flip-hint">Hover לפרטים</div>
+          </div>
+          <div class="hw-card-back">
+            <div class="hw-back-title" style="color:var(--green)">Desktop / Tablet</div>
+            <div class="hw-back-items">
+              <div class="hw-back-item"><span class="chk">✓</span>Offline support מלא</div>
+              <div class="hw-back-item"><span class="chk">✓</span>Progressive Web App</div>
+              <div class="hw-back-item"><span class="chk">✓</span>Native client Windows ו-Mac</div>
+              <div class="hw-back-item"><span class="chk">✓</span>סנכרון אוטומטי לאחר חזרה לאונליין</div>
+              <div class="hw-back-item"><span class="chk">✓</span>Apple Pencil ו-stylus</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hw-card">
+        <div class="hw-card-inner">
+          <div class="hw-card-front" style="border-color:rgba(168,140,140,.2)">
+            <span class="hw-visual">🥽</span>
+            <div class="hw-name">VR / AR</div>
+            <div class="hw-desc">Spatial workspace עם WebXR. Meta Quest ו-Apple Vision Pro.</div>
+            <div class="compat-lbl"><span>תאימות</span><span style="color:var(--green)">מלאה</span></div>
+            <div class="compat-bar"><div class="compat-fill" style="width:100%"></div></div>
+            <div class="hw-flip-hint">Hover לפרטים</div>
+          </div>
+          <div class="hw-card-back">
+            <div class="hw-back-title" style="color:var(--rose)">VR / AR</div>
+            <div class="hw-back-items">
+              <div class="hw-back-item"><span class="chk">✓</span>Spatial workspace תלת-ממדי</div>
+              <div class="hw-back-item"><span class="chk">✓</span>WebXR API ללא התקנה</div>
+              <div class="hw-back-item"><span class="chk">✓</span>Meta Quest 2, 3, Pro</div>
+              <div class="hw-back-item"><span class="chk">✓</span>Apple Vision Pro</div>
+              <div class="hw-back-item"><span class="chk">✓</span>Hand tracking ו-voice control</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SCOPE -->
+<section class="section" id="scope">
+  <div class="reveal">
+    <div class="eyebrow">Project Scope</div>
+    <h2 class="sec-title">היקף הפרויקט</h2>
+    <p class="sec-intro">פרויקט ברמת מורכבות ארגונית, שלושה שלבי פיתוח, ארבע שכבות מערכת, וששה מודולים שפועלים יחד.</p>
+    <div class="scope-grid">
+      <div class="scope-item"><div class="scope-num" data-val="6">0</div><div class="scope-lbl">מודולים מרכזיים</div></div>
+      <div class="scope-item"><div class="scope-num" data-val="4">0</div><div class="scope-lbl">שכבות ארכיטקטורה</div></div>
+      <div class="scope-item"><div class="scope-num" data-val="4">0</div><div class="scope-lbl">סוגי חומרה</div></div>
+      <div class="scope-item"><div class="scope-num" data-val="3">0</div><div class="scope-lbl">אינטגרציות AI</div></div>
+      <div class="scope-item"><div class="scope-num" data-val="∞">0</div><div class="scope-lbl">מרחבי עבודה</div></div>
+    </div>
+    <div class="tl-grid">
+      <div class="tl-phase">
+        <div class="tl-dot" style="background:var(--blue)"></div>
+        <div class="tl-card" style="border-color:rgba(124,147,160,.2)">
+          <div class="tl-phase-num" style="color:var(--blue)">שלב 1</div>
+          <div class="tl-phase-name">גרעין המערכת</div>
+          <div class="tl-weeks" style="color:var(--blue)">4–6 שבועות</div>
+          <ul class="tl-items">
+            <li>Workspace Engine ו-Auth</li>
+            <li>ממשק responsive לכל מכשיר</li>
+            <li>תשתית Real-time sync</li>
+            <li>ניהול משתמשים ו-RBAC</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-phase">
+        <div class="tl-dot" style="background:var(--amber)"></div>
+        <div class="tl-card" style="border-color:rgba(179,164,136,.2)">
+          <div class="tl-phase-num" style="color:var(--amber)">שלב 2</div>
+          <div class="tl-phase-name">מודולים ויכולות</div>
+          <div class="tl-weeks" style="color:var(--amber)">6–8 שבועות</div>
+          <ul class="tl-items">
+            <li>Canvas ו-Dashboard Studio</li>
+            <li>AI Hub עם ניתוב מודלים</li>
+            <li>Multi-Screen Share (WebRTC)</li>
+            <li>Meeting Intelligence</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-phase">
+        <div class="tl-dot" style="background:var(--green)"></div>
+        <div class="tl-card" style="border-color:rgba(111,166,172,.2)">
+          <div class="tl-phase-num" style="color:var(--green)">שלב 3</div>
+          <div class="tl-phase-name">חומרה, QA והטמעה</div>
+          <div class="tl-weeks" style="color:var(--green)">3–4 שבועות</div>
+          <ul class="tl-items">
+            <li>Touch Wall ו-Video Wall drivers</li>
+            <li>VR / AR integration (WebXR)</li>
+            <li>Performance ו-load testing</li>
+            <li>Deployment ו-monitoring</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="tl-total">
+      <div class="tl-stat">
+        <div class="tl-stat-num" style="color:var(--blue)" data-val="13">0</div>
+        <div class="tl-stat-lbl">עד 18 שבועות עבודה</div>
+      </div>
+      <div class="tl-divider"></div>
+      <div class="tl-stat">
+        <div class="tl-stat-num" style="color:var(--amber)" data-val="3">0</div>
+        <div class="tl-stat-lbl">שלבי פיתוח</div>
+      </div>
+      <div class="tl-divider"></div>
+      <div class="tl-stat">
+        <div class="tl-stat-num" style="color:var(--green)" data-val="6">0</div>
+        <div class="tl-stat-lbl">מודולים בפרודקשן</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="border-top:1px solid var(--border);text-align:center;padding:2rem;font-size:.75rem;color:var(--muted)">
+  WorkSpace OS &middot; Enterprise Workspace Platform &middot; Confidential
+</footer>
+</div>
+
+<script>
+// CURSOR
+(()=>{
+  const h=document.getElementById('ch'),o=document.getElementById('co');
+  let mx=window.innerWidth/2,my=window.innerHeight/2,hx=mx,hy=my,ox=mx,oy=my;
+  window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+  (function loop(){
+    hx+=(mx-hx)*.18;hy+=(my-hy)*.18;
+    ox+=(mx-ox)*.07;oy+=(my-oy)*.07;
+    h.style.left=hx+'px';h.style.top=hy+'px';
+    o.style.left=ox+'px';o.style.top=oy+'px';
+    requestAnimationFrame(loop);
+  })();
+  const big=()=>{h.style.width='50px';h.style.height='50px';o.style.width='120px';o.style.height='120px'};
+  const norm=()=>{h.style.width='32px';h.style.height='32px';o.style.width='90px';o.style.height='90px'};
+  document.querySelectorAll('a,button,.cap-card,.hw-card,.tab,.sb-item,.arch-layer,.scope-item,.tl-card').forEach(el=>{
+    el.addEventListener('mouseenter',big);el.addEventListener('mouseleave',norm);
+  });
+  document.addEventListener('mouseleave',()=>{h.style.opacity='0';o.style.opacity='0'});
+  document.addEventListener('mouseenter',()=>{h.style.opacity='1';o.style.opacity='1'});
+})();
+
+// REVEAL
+new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('shown')}),{threshold:.08})
+  .observe && document.querySelectorAll('.reveal').forEach(el=>new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('shown')}),{threshold:.08}).observe(el));
+
+// COUNTER
+function animCount(el,target,dur=1100){
+  if(target==='∞'){el.textContent='∞';return}
+  const n=parseInt(target);const start=performance.now();
+  (function t(now){const p=Math.min((now-start)/dur,1);const e=1-Math.pow(1-p,3);el.textContent=Math.round(n*e);if(p<1)requestAnimationFrame(t);else el.textContent=target})(start);
+}
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){animCount(e.target,e.target.dataset.val);new IntersectionObserver(()=>{}).observe(e.target)}});
+},{threshold:.5}).observe && document.querySelectorAll('[data-val]').forEach(el=>
+  new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){animCount(el,el.dataset.val);}}),{threshold:.5}).observe(el)
+);
+
+// PARTICLES
+function spark(x,y){
+  for(let i=0;i<6;i++){
+    const p=document.createElement('div');p.className='particle';
+    const s=3+Math.random()*3,a=Math.random()*360,d=20+Math.random()*40;
+    p.style.cssText=`width:${s}px;height:${s}px;background:#6FA6AC;left:${x+Math.cos(a*Math.PI/180)*d}px;top:${y}px;animation-duration:${.5+Math.random()*.3}s`;
+    document.body.appendChild(p);setTimeout(()=>p.remove(),900);
+  }
+}
+
+// EXPAND CARDS
+document.querySelectorAll('.cap-card').forEach(card=>{
+  card.addEventListener('click',e=>{
+    const was=card.classList.contains('open');
+    document.querySelectorAll('.cap-card.open').forEach(c=>c.classList.remove('open'));
+    if(!was){
+      card.classList.add('open');spark(e.clientX,e.clientY);
+      card.querySelectorAll('.complexity-fill').forEach(b=>{const w=b.style.width;b.style.width='0';setTimeout(()=>b.style.width=w,200)});
+    }
+  });
+});
+
+// COMPAT BARS
+new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.querySelectorAll('.compat-fill').forEach(b=>{const w=b.style.width;b.style.width='0';setTimeout(()=>b.style.width=w,200)})}),{threshold:.2})
+  .observe && document.querySelectorAll('.hw-card').forEach(el=>new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.querySelectorAll('.compat-fill').forEach(b=>{const w=b.style.width;b.style.width='0';setTimeout(()=>b.style.width=w,200)})}),{threshold:.2}).observe(el));
+
+// MOCKUP
+const WS=[
+  {title:'משרד התחבורה',sub:'יום העשרה, 12 משתתפים פעילים',layout:'layout-2x2',
+   zones:[
+    {lbl:'Live Dashboard',html:`<div class="d-bars"><div class="d-bar" style="height:26px;animation-delay:0s"></div><div class="d-bar" style="height:40px;animation-delay:.2s"></div><div class="d-bar" style="height:20px;animation-delay:.4s"></div><div class="d-bar" style="height:48px;animation-delay:.6s"></div><div class="d-bar" style="height:33px;animation-delay:.8s"></div><div class="d-bar" style="height:42px;animation-delay:1s"></div></div>`},
+    {lbl:'Canvas משותף',html:`<div class="canvas-zone"><svg width="100%" height="55" viewBox="0 0 130 55"><rect x="3" y="3" width="30" height="16" rx="3" fill="none" stroke="rgba(111,166,172,.5)" stroke-width="1"/><rect x="44" y="3" width="30" height="16" rx="3" fill="none" stroke="rgba(124,147,160,.5)" stroke-width="1"/><rect x="85" y="3" width="30" height="16" rx="3" fill="none" stroke="rgba(179,164,136,.5)" stroke-width="1"/><rect x="23" y="33" width="30" height="16" rx="3" fill="none" stroke="rgba(168,140,140,.5)" stroke-width="1"/><rect x="65" y="33" width="30" height="16" rx="3" fill="none" stroke="rgba(111,166,172,.4)" stroke-width="1"/><line x1="18" y1="19" x2="28" y2="33" stroke="rgba(255,255,255,.15)" stroke-width=".8"/><line x1="59" y1="19" x2="50" y2="33" stroke="rgba(255,255,255,.15)" stroke-width=".8"/><line x1="100" y1="19" x2="90" y2="33" stroke="rgba(255,255,255,.15)" stroke-width=".8"/></svg></div>`},
+    {lbl:'AI Assistant',html:`<div class="ai-msgs"><div class="ai-msg in">סכם את נקודות הדיון מהשעה האחרונה</div><div class="ai-msg out" style="animation-delay:.7s">זוהו 4 נושאים: תקציב, לוחות זמנים, משאבים, ואחריות</div><div class="ai-msg in" style="animation-delay:1.4s">הפק משימות לכל משתתף</div></div>`},
+    {lbl:'Screen Share',html:`<div class="share-grid"><div class="share-item" style="background:rgba(111,166,172,.08);border-color:rgba(111,166,172,.2);color:#6FA6AC">MacBook ✓</div><div class="share-item" style="background:rgba(124,147,160,.08);border-color:rgba(124,147,160,.2);color:#7C93A0">iPad Live</div><div class="share-item" style="background:rgba(179,164,136,.08);border-color:rgba(179,164,136,.2);color:#B3A488">Touch Wall</div><div class="share-item" style="color:var(--muted)">+ הוסף</div></div>`}
+   ],
+   right:{active:'12',lbl:'משתתפים',mtg:'יום העשרה',prog:78,av:['#5A9298','#7C93A0','#B3A488','#A88C8C','#8A93A6','#A88C8C'],labels:['א','מ','ד','ר','נ','ל'],extra:'+6',k3l:'AI Requests',k3v:'284',k3s:'↑ 62% vs. ממוצע'}},
+  {title:'משרד החדשנות',sub:'פגישת מנהלים, 5 משתתפים',layout:'layout-main-side',
+   zones:[
+    {lbl:'KPI Dashboard',html:`<div class="d-kpi-row"><div class="d-kpi"><div class="d-kpi-val">₪2.4M</div><div class="d-kpi-lbl">תקציב רבעון</div><div class="d-kpi-chg">▲ 12%</div></div><div class="d-kpi"><div class="d-kpi-val" style="color:var(--green)">87%</div><div class="d-kpi-lbl">יעד ביצוע</div></div></div><div class="d-bars" style="height:38px"><div class="d-bar" style="height:20px;animation-delay:0s"></div><div class="d-bar" style="height:32px;animation-delay:.2s"></div><div class="d-bar" style="height:26px;background:linear-gradient(to top,#B3A488,#C7BB9C);animation-delay:.4s"></div><div class="d-bar" style="height:38px;animation-delay:.6s"></div><div class="d-bar" style="height:28px;animation-delay:.8s"></div></div>`,span:'row-span-2'},
+    {lbl:'AI ניתוח',html:`<div class="ai-msgs"><div class="ai-msg out" style="animation-delay:.3s">פרויקט 3, זוהתה חריגה. להגדיל רזרבה.</div><div class="ai-msg in" style="animation-delay:1s">הצג המלצות</div></div>`},
+    {lbl:'Canvas',html:`<div class="canvas-zone"><svg width="100%" height="48" viewBox="0 0 130 48"><rect x="3" y="3" width="34" height="16" rx="3" fill="none" stroke="rgba(179,164,136,.5)" stroke-width="1.2"/><text x="20" y="14" font-size="6" fill="rgba(179,164,136,.8)" text-anchor="middle" font-family="Heebo">Q1</text><rect x="48" y="3" width="34" height="16" rx="3" fill="none" stroke="rgba(111,166,172,.5)" stroke-width="1.2"/><text x="65" y="14" font-size="6" fill="rgba(111,166,172,.8)" text-anchor="middle" font-family="Heebo">Q2</text><rect x="25" y="28" width="34" height="16" rx="3" fill="none" stroke="rgba(124,147,160,.5)" stroke-width="1.2"/><text x="42" y="39" font-size="6" fill="rgba(124,147,160,.8)" text-anchor="middle" font-family="Heebo">יעדים</text><line x1="20" y1="19" x2="32" y2="28" stroke="rgba(255,255,255,.15)" stroke-width=".8"/><line x1="65" y1="19" x2="55" y2="28" stroke="rgba(255,255,255,.15)" stroke-width=".8"/></svg></div>`}
+   ],
+   right:{active:'5',lbl:'מנהלים',mtg:'פגישת Q1',prog:55,av:['#5A9298','#7C93A0','#B3A488','#A88C8C','#8A93A6'],labels:['מ','ד','א','ר','נ'],extra:'',k3l:'החלטות',k3v:'3',k3s:'2 ממתינות'}},
+  {title:'אגף התקציבים',sub:'תכנון שנתי 2027, 8 אנשי מקצוע',layout:'layout-3col',
+   zones:[
+    {lbl:'תקציבות',html:`<div><div style="display:flex;font-size:.56rem;color:var(--muted);padding:.15rem 0;border-bottom:1px solid var(--border);gap:.2rem"><span style="flex:1">אגף</span><span>יעד</span><span style="width:36px;text-align:left">סטטוס</span></div><div style="display:flex;font-size:.6rem;padding:.2rem 0;gap:.2rem"><span style="flex:1;color:var(--text)">חינוך</span><span style="color:var(--green);font-weight:600">₪4.2M</span><span style="width:36px;text-align:left;color:var(--green);font-size:.5rem">✓</span></div><div style="display:flex;font-size:.6rem;padding:.2rem 0;gap:.2rem"><span style="flex:1;color:var(--text)">בריאות</span><span style="color:var(--green);font-weight:600">₪6.8M</span><span style="width:36px;text-align:left;color:var(--amber);font-size:.5rem">בדיון</span></div><div style="display:flex;font-size:.6rem;padding:.2rem 0;gap:.2rem"><span style="flex:1;color:var(--text)">תחבורה</span><span style="color:var(--green);font-weight:600">₪3.1M</span><span style="width:36px;text-align:left;color:var(--green);font-size:.5rem">✓</span></div><div style="display:flex;font-size:.6rem;padding:.2rem 0;gap:.2rem"><span style="flex:1;color:var(--text)">ביטחון</span><span style="color:var(--green);font-weight:600">₪8.5M</span><span style="width:36px;text-align:left;color:var(--amber);font-size:.5rem">בדיון</span></div></div>`},
+    {lbl:'Canvas תכנון',html:`<div class="canvas-zone"><svg width="100%" height="65" viewBox="0 0 90 65"><rect x="2" y="3" width="22" height="12" rx="2" fill="rgba(111,166,172,.1)" stroke="rgba(111,166,172,.5)" stroke-width="1"/><text x="13" y="12" font-size="4.5" fill="rgba(111,166,172,.9)" text-anchor="middle" font-family="Heebo">אגפים</text><rect x="30" y="3" width="22" height="12" rx="2" fill="rgba(124,147,160,.1)" stroke="rgba(124,147,160,.5)" stroke-width="1"/><text x="41" y="12" font-size="4.5" fill="rgba(124,147,160,.9)" text-anchor="middle" font-family="Heebo">יעדים</text><rect x="60" y="3" width="22" height="12" rx="2" fill="rgba(179,164,136,.1)" stroke="rgba(179,164,136,.5)" stroke-width="1"/><text x="71" y="12" font-size="4.5" fill="rgba(179,164,136,.9)" text-anchor="middle" font-family="Heebo">ביצוע</text><rect x="18" y="25" width="22" height="12" rx="2" fill="rgba(111,166,172,.12)" stroke="rgba(111,166,172,.4)" stroke-width="1"/><text x="29" y="34" font-size="4.5" fill="rgba(111,166,172,.9)" text-anchor="middle" font-family="Heebo" font-weight="600">אישור</text><rect x="50" y="25" width="22" height="12" rx="2" fill="rgba(168,140,140,.1)" stroke="rgba(168,140,140,.4)" stroke-width="1"/><line x1="13" y1="15" x2="22" y2="25" stroke="rgba(255,255,255,.12)" stroke-width=".7"/><line x1="41" y1="15" x2="36" y2="25" stroke="rgba(255,255,255,.12)" stroke-width=".7"/><line x1="71" y1="15" x2="63" y2="25" stroke="rgba(255,255,255,.12)" stroke-width=".7"/></svg></div>`},
+    {lbl:'AI חריגות',html:`<div class="ai-msgs"><div class="ai-msg out" style="animation-delay:.2s">זוהתה חריגה בתקציב החדשנות, Q3 2027</div><div class="ai-msg in" style="animation-delay:.8s">מה ההמלצה?</div><div class="ai-msg out" style="animation-delay:1.5s">הגדל רזרבה ב-8% או העבר מהביטחון</div></div>`}
+   ],
+   right:{active:'8',lbl:'אנשי מקצוע',mtg:'תכנון 2027',prog:42,av:['#5A9298','#7C93A0','#B3A488','#A88C8C','#8A93A6','#A88C8C'],labels:['צ','ר','מ','א','ד','נ'],extra:'+2',k3l:'פריטים לאישור',k3v:'11',k3s:'3 דחופים השבוע'}}
+];
+
+function rRight(ws){
+  const r=ws.right;
+  const av=r.av.map((c,i)=>`<div class="u-av" style="background:${c}">${r.labels[i]}</div>`).join('')+(r.extra?`<div class="u-av" style="background:rgba(255,255,255,.1);font-size:.42rem">${r.extra}</div>`:'');
+  return `<div class="rw"><div class="rw-lbl">פעילים</div><div class="rw-val">${r.active}</div><div class="rw-sub">${r.lbl}</div><div class="u-dots">${av}</div></div>
+    <div class="rw"><div class="rw-lbl">פגישה</div><div class="rw-val" style="font-size:.82rem">${r.mtg}</div><div class="progress-bar"><div class="progress-fill" style="width:${r.prog}%"></div></div><div style="font-size:.52rem;color:var(--muted);margin-top:.12rem">${r.prog}% הושלם</div></div>
+    <div class="rw"><div class="rw-lbl">${r.k3l}</div><div class="rw-val">${r.k3v}</div><div class="rw-sub rw-green">${r.k3s}</div></div>`;
+}
+function rMain(ws){
+  const zh=ws.zones.map((z,i)=>`<div class="zone" style="${z.span?'grid-row:span 2':''}"><div class="zone-lbl">${z.lbl}</div>${z.html}</div>`).join('');
+  return `<div class="mockup-header"><div><div class="mockup-title">${ws.title}</div><div class="mockup-sub">${ws.sub}</div></div></div><div class="mockup-zones ${ws.layout}">${zh}</div>`;
+}
+
+let cur=0;
+function sw(i){
+  cur=i;const ws=WS[i];
+  document.getElementById('mockupMain').innerHTML=rMain(ws);
+  document.getElementById('mockupRight').innerHTML=rRight(ws);
+  document.querySelectorAll('#mockupTabs .tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  document.querySelectorAll('.sb-item[data-ws]').forEach(el=>el.classList.toggle('active',parseInt(el.dataset.ws)===i));
+}
+sw(0);
+document.querySelectorAll('#mockupTabs .tab').forEach((t,i)=>t.addEventListener('click',()=>sw(i)));
+document.querySelectorAll('.sb-item[data-ws]').forEach(el=>el.addEventListener('click',()=>sw(parseInt(el.dataset.ws))));
+</script>
+</body>
+</html>
